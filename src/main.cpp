@@ -8,35 +8,19 @@
 
 CIs ID = calc_IDs(0); // IDs after calcs SET OFFSET HERE
 
-#ifdef SHOCK_POT
-Metro uShock = 50; // Shock Pot pol rate
-#endif
-#ifdef STEER_POT
-Metro uSteer = 50; // Steering Pot pol rate
-#endif
-#ifdef WHEEL_SPD
+Metro uaPots = 50; // Shock Pot pol rate
 Metro uSpeed = 50; // Wheel speed pol rate
-#endif
-#ifdef TIRE_TEMP
 Metro uTemps = 50; // Tire Temp pol rate
-#endif
-
-// Debug things
-#ifdef DEBUG
 Metro uART = 1000; // Timeout for waiting on user to connect
-#endif
 
 void setup() {
 
   init_CAN();
 
-#ifdef SHOCK_POT
-#ifdef ADC
+  init_ADC();
   shock_ADC(0);
-#else
-  shock_AVR(18);
-#endif
-#endif
+  // shock_AVR(18);
+  steer_ADC(1);
 
 #ifdef DEBUG
   Serial.begin(9600);
@@ -53,24 +37,14 @@ void setup() {
 }
 
 void loop() {
-#ifdef SHOCK_POT
-  if (uShock.check()) {
-    send_CAN(ID.shockID, shock_Val());
+  if (uaPots.check()) {
+    send_CAN(ID.apotsID, pots_Data());
   }
-#endif
 
-#ifdef STEER_POT
-  if (uSteer.check()) {
-  }
-#endif
-
-#ifdef TIRE_TEMP
   if (uTemps.check()) {
+    send_CAN(ID.ttempID, temps_IMO());
   }
-#endif
 
-#ifdef WHEEL_SPD
-  if (uSpeed.check()) {
-  }
-#endif
+  // if (uSpeed.check()) {
+  // }
 }

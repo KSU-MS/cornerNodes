@@ -6,12 +6,9 @@
 
 // Struct to hold all IDs
 struct CIs {
-  uint16_t shockID; // shock pot ID
-  uint16_t steerID; // steering pot ID
+  uint16_t apotsID; // All pots ID
   uint16_t speedID; // wheel speed ID
-  uint16_t tempOID; // Tire temp outer ID
-  uint16_t tempMID; // Tire temp mid ID
-  uint16_t tempIID; // Tire temp inner ID
+  uint16_t ttempID; // Tire temp outer ID
 };
 
 // Function to make IDs
