@@ -3,29 +3,41 @@
 // Local vars
 uint8_t speed_PIN;
 uint8_t speed_msg[8];
+double sum;
+int count;
+float freq;
 
-// Function to set pin for other shit
-void speed_Pin(uint8_t pin) {
-  speed_PIN = pin;
-#ifdef DEBUG
-  Serial.println("Wheel speed enabled");
-#endif
+// Tells the lib to start reading pin 13 on the micro
+void init_WSPD() { FreqMeasure.begin(); }
+
+void speed_Up() {
+  // Read value from PIN
+  if (FreqMeasure.available()) {
+    sum += FreqMeasure.read();
+    count++;
+
+    if (count > 30) {
+      // Use FreqMeasure built in converions funcs
+      freq = FreqMeasure.countToFrequency(sum / count);
+
+      // Reset working vars
+      sum = 0;
+      count = 0;
+    }
+  }
 }
 
 // Function to actually read the boi
 uint8_t *speed_Val() {
-  // Read value from PIN
-  uint32_t v = digitalRead(speed_PIN);
-
-  // Copy the value into a uint8_t array for CAN
-  memcpy(speed_msg, &v, sizeof(v));
-
-// Print the raw value and uint8_t array value
 #ifdef DEBUG
-  Serial.println(speed_msg);
-  Serial.println(v);
-#endif
+  // Print the raw value
+  Serial.print("Freq: ");
+  Serial.println(freq);
+#endif // DEBUG
 
-  // Return that value
+  // Cast the float to a byte array
+  memcpy(speed_msg, &freq, sizeof(freq));
+
+  // Return the calculated value or last value
   return speed_msg;
 }

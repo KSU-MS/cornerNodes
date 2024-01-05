@@ -11,7 +11,16 @@ struct CIs {
   uint16_t ttempID; // Tire temp outer ID
 };
 
+enum corner {
+  node_fl = 0,
+  node_fr = 1,
+  node_fm = 2,
+  node_rl = 3,
+  node_rr = 4,
+  node_rm = 5,
+};
+
 // Function to make IDs
-CIs calc_IDs(uint8_t offset);
+CIs calc_IDs(corner offset);
 
 #endif

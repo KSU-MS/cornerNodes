@@ -5,9 +5,11 @@
 #define ADC_READS // enables use of the ADC instead of the AVR analog read
 #define SHOCK_POT // enables reading and sending of shock pot values
 #define STEER_POT // enables reading and sending of steering values
-#define TIRE_TEMP // enables reading and sending of tire temps values
-// #define WHEEL_SPD // enables reading and sending of wheel speed values
-#define DEBUG
+// Wheel speeds are currently not calibrated to anything and the math is wack
+#define WHEEL_SPD // enables reading and sending of wheel speed values
+// Tire temps are fucked for now as it takes too much ram
+// #define TIRE_TEMP // enables reading and sending of tire temp values
+#define DEBUG // enables debug prints for when shit doesn't look right
 
 // Always needed imports
 #include "CAN_Handle.hpp"

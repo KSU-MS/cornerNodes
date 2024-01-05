@@ -9,7 +9,7 @@ int apotsBase = 1728; // 0x6C0
 int speedBase = 1696; // 0x6A0
 int tTempBase = 1984; // 0x7C0
 
-CIs calc_IDs(uint8_t offset) {
+CIs calc_IDs(corner offset) {
   // Define a holder
   CIs ci_out;
 

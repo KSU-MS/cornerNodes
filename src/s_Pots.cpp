@@ -63,8 +63,8 @@ uint8_t *shock_Val() {
 
 // Print the raw value and uint8_t array value
 #ifdef DEBUG
-  Serial.print("\t Shock raw: ");
-  Serial.print(v);
+  Serial.print("Shock raw: ");
+  Serial.println(v);
 #endif // DEBUG
 
   // Return that value
@@ -107,8 +107,8 @@ uint8_t *steer_Val() {
 
 // Print the raw value
 #ifdef DEBUG
-  Serial.print("\t Steer raw: ");
-  Serial.print(v);
+  Serial.print("Steer raw: ");
+  Serial.println(v);
 #endif // DEBUG
 
   // Copy the value into a uint8_t array for CAN

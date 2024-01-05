@@ -2,10 +2,13 @@
 #define s_speed_HPP
 
 // Imports
+#include "main.hpp"
 #include <Arduino.h>
+#include <FreqMeasure.h>
 
 // Function defs
-void speed_Pin(uint8_t pin);
+void init_WSPD();
+void speed_Up();
 uint8_t *speed_Val();
 
 #endif
