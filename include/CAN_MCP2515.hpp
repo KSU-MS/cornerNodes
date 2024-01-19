@@ -1,5 +1,3 @@
-#if defined(ARDUINO_ARCH_AVR)
-
 #ifndef CAN_MCP2515_hpp
 #define CAN_MCP2515_hpp
 
@@ -448,4 +446,3 @@ private:
 extern CAN_MCP2515 CAN;
 
 #endif // _CAN_MCP2515_H_
-#endif // defined(ARDUINO_ARCH_AVR)

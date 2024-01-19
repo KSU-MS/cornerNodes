@@ -1,5 +1,5 @@
-#ifndef s_temps_HPP
-#define s_temps_HPP
+#ifndef s_Temps_HPP
+#define s_Temps_HPP
 
 // Imports
 #include "main.hpp"
@@ -8,7 +8,6 @@
 #include <SPI.h>
 
 // Function defs
-void temps_I2C(uint8_t SDA, uint8_t SDL);
+void init_ts();
 uint8_t *temps_IMO();
-
 #endif

@@ -4,11 +4,14 @@
 // Imports
 #include "main.hpp"
 #include <Arduino.h>
-#include <FreqMeasure.h>
+#include <FreqMeasureMulti.h>
+
+// Pin for wheel speed sensor
+#define WSP 9
 
 // Function defs
-void init_WSPD();
-void speed_Up();
-uint8_t *speed_Val();
+void init_ws();
+void ws_Update();
+uint8_t *ws_Val();
 
 #endif

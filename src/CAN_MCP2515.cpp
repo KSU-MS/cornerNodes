@@ -56,8 +56,6 @@ Designed to be used with ATMEL ATMega328P with Arduino bootloader, MCP2515
 Stand-Alone CAN Controller and MCP2561 High-Speed CAN Transceivers.
 */
 
-#if defined(ARDUINO_ARCH_AVR)
-
 #include "CAN_MCP2515.hpp"
 
 ///////////////////////////////////////////////////////////////////
@@ -618,5 +616,3 @@ void CAN_MCP2515::setInterrupts(uint8_t mask, uint8_t writeVal) {
 }
 
 CAN_MCP2515 CAN(10); // Create CAN channel using pin 10 for SPI chip select
-
-#endif // defined(ARDUINO_ARCH_AVR

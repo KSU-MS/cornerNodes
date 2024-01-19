@@ -1,5 +1,5 @@
-#ifndef CAN_Defs_hpp
-#define CAN_Defs_hpp
+#ifndef _CAN_Defs_HPP_
+#define _CAN_Defs_HPP_
 
 #include <Arduino.h>
 #include <inttypes.h>
@@ -88,4 +88,4 @@ public:
   // CAN_Frame& operator=(const CAN_Frame&);
 };
 
-#endif
+#endif // _CAN_H_

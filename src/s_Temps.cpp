@@ -9,7 +9,7 @@ uint16_t hold_plz;     // hold data for averaging
 uint8_t other_hold[2]; // another hold for wacky array casting shit
 
 // Function to set pin for other shit
-void temps_I2C(uint8_t SDA, uint8_t SDL) {
+void init_ts() {
   // Set wire speed to increase data rates
   Wire.setClock(1000000);
 
@@ -18,6 +18,7 @@ void temps_I2C(uint8_t SDA, uint8_t SDL) {
 
 #ifdef DEBUG
   Serial.println("Tire temps enabled");
+
   if (!mlx.begin(MLX90640_I2CADDR_DEFAULT, &Wire)) {
     Serial.println("Temp module wants to die");
   }
