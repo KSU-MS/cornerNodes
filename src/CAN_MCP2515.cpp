@@ -56,7 +56,7 @@ Designed to be used with ATMEL ATMega328P with Arduino bootloader, MCP2515
 Stand-Alone CAN Controller and MCP2561 High-Speed CAN Transceivers.
 */
 
-#include "CAN_MCP2515.hpp"
+#include "CAN_MCP2515.h"
 
 ///////////////////////////////////////////////////////////////////
 ///							                                                ///

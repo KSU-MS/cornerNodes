@@ -1,5 +1,5 @@
-#ifndef _CAN_Defs_HPP_
-#define _CAN_Defs_HPP_
+#ifndef CAN_Defs_h
+#define CAN_Defs_h
 
 #include <Arduino.h>
 #include <inttypes.h>

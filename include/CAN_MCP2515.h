@@ -1,7 +1,7 @@
 #ifndef CAN_MCP2515_hpp
 #define CAN_MCP2515_hpp
 
-#include "CAN_Defs.hpp"
+#include "CAN_Defs.h"
 #include <Arduino.h>
 #include <SPI.h>
 

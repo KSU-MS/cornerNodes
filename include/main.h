@@ -1,9 +1,10 @@
-#ifndef main_HPP
-#define main_HPP
+#ifndef main_h
+#define main_h
 
 // Toggles for diffrent features
-#define SHOCK_POT // enables reading and sending of shock pot values
-#define STEER_POT // enables reading and sending of steering values
+// #define FLEXCAN // sets CAN provider to the teensy's onboard CAN controller
+#define BLUECAN   // sets CAN provider to the MCP2515
+#define POT       // enables reading and sending of pot values
 #define WHEEL_SPD // enables reading and sending of wheel speed values
 #define TIRE_TEMP // enables reading and sending of tire temp values
 #define DEBUG     // enables debug prints for when shit doesn't look right
@@ -15,10 +16,7 @@
 #include <Metro.h>
 
 // Pot things
-#ifdef SHOCK_POT
-#include "s_Pots.hpp"
-#endif
-#ifdef STEER_POT
+#ifdef POT
 #include "s_Pots.hpp"
 #endif
 
