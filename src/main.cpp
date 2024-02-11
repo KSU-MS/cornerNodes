@@ -1,7 +1,6 @@
 // All the toggles are in the "main.hpp" file
 #include "main.h"
 #include "CAN_Handle.hpp"
-#include "WProgram.h"
 
 // If you want to add a new sensor, create a hpp file with your defs, libs and
 // its logic, you'll also have to add the sensor to the CIs class in
@@ -10,28 +9,26 @@
 // Get IDs after calcs
 CIs ID = calc_IDs(node_fl); // SET OFFSET HERE
 
-// Init pots
-Pot fl = Pot(1, true);
-Pot fr = Pot(2, true);
-Pot steer = Pot(16, false);
-
+// Some globals
 Metro uPot = 50;   // Shock Pot pol rate
 Metro uSpeed = 50; // Wheel speed pol rate
 Metro uTemps = 50; // Tire Temp pol rate
 Metro uART = 3000; // Timeout for waiting on user to connect
 
+// Pot fl_pt;
+// Wheel_Spd fl_ws;
+Tire_Temp fl_tt;
+
 void setup() {
-  // Setup whatever can (defined in the main.h)
-  init_CAN();
-
-  // Init wheel speed
-  init_ws();
-
-  // Init temp sensor
-  init_ts();
-
   // Start serial
   Serial.begin(9600);
+
+  // fl_pot.init(1, true, 0);
+  // fl_ws.init(9, 0);
+  fl_tt.init();
+
+  // Setup whatever CAN coms
+  init_CAN();
 
 #ifdef DEBUG
   // Wait for user to connect to see all output
@@ -42,31 +39,27 @@ void setup() {
     }
     delay(10);
   }
+
+  Serial.println("Debug enabled");
 #endif
 }
 
 void loop() {
   if (uPot.check()) {
-    // TODO: Make this not stupid maybe
-    uint8_t *msg;
-    msg[0] = fl.getMessage()[0];
-    msg[1] = fl.getMessage()[1];
-    msg[2] = fr.getMessage()[0];
-    msg[3] = fr.getMessage()[1];
-    msg[4] = steer.getMessage()[0];
-    msg[5] = steer.getMessage()[1];
-
-    send_CAN(ID.apotsID, msg);
+    // send_CAN(ID.apotsID, fl_pot.getMessage());
+    // fl_pot.getMessage();
   }
 
   if (uTemps.check()) {
-    send_CAN(ID.ttempID, temps_IMO());
+    //   send_CAN(ID.ttempID, fl_tt.getMessage());
+    fl_tt.getMessage();
   }
 
   if (uSpeed.check()) {
-    send_CAN(ID.speedID, ws_Val());
+    // send_CAN(ID.speedID, fl_ws.getMessage());
+    // fl_ws.getMessage();
   }
 
   // Update our fellows
-  ws_Update();
+  // fl_ws.update();
 }

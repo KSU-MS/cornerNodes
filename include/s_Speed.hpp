@@ -1,71 +1,72 @@
-#ifndef s_speed_HPP
-#define s_speed_HPP
+#ifndef s_speed_hpp
+#define s_speed_hpp
 
 #include "main.h"
 
+#ifdef WHEEL_SPD
 // Imports
 #include <Arduino.h>
 #include <FreqMeasureMulti.h>
 
-// Pin for wheel speed sensor
-#define WSP 9
+class Wheel_Spd {
+  int count;
+  float sum;
+  uint8_t offset;
+  FreqMeasureMulti ws;
 
-// Function defs
-void init_ws();
-void ws_Update();
-uint8_t *ws_Val();
+  union {
+    uint16_t in;
+    byte b[2];
+  } value;
 
-// Local vars
-uint8_t speed_msg[8];
-uint8_t sum;
-uint8_t count;
-uint32_t out_rpm;
-float rpm;
-unsigned long current_rpm_ROC;
+public:
+  void init(uint8_t pin, uint8_t offset);
+  void update();
+  uint8_t *getMessage();
+};
 
-// Wheel speed class
-FreqMeasureMulti ws;
+// Tells the lib to start reading pin X. Look at FreqMeasureMulti repo for what
+// pins/controllers are supported
+void Wheel_Spd::init(uint8_t set_pin, uint8_t set_offset) {
+  offset = set_offset;
 
-// Tells the lib to start reading pin 9 on the teensy
-void init_ws() { ws.begin(WSP); }
+  ws.begin(set_pin);
+  Serial.printf("Set pin %d for wheel speed with offset %d\n", set_pin, offset);
+}
 
-void ws_Update() {
-  // Read value from PIN
+void Wheel_Spd::update() {
+  // Read value from WS
   if (ws.available()) {
-    // Read all the times it passed a tooth
     sum = sum + ws.read();
-
-    //
     count = count + 1;
+  }
+}
 
-    // Get elapsed time
-    current_rpm_ROC = millis();
+uint8_t *Wheel_Spd::getMessage() {
+  // Holder for the byte array
+  uint8_t *spd_msg;
 
-    if (count > 1) {
-      rpm = ws.countToFrequency(sum / count) * 60 / 18;
+  // If car has moved update value
+  if (count > 0) {
+    value.in = (int)((ws.countToFrequency(sum / count) * 60 / 18) * 100);
 
-      // Reset working vars
-      sum = 0;
-      count = 0;
-    }
+    // Reset working vars
+    sum = 0;
+    count = 0;
   }
 
-  out_rpm = (int)(rpm * 100);
-}
+  // Copy the value into a uint8_t array for CAN
+  spd_msg[offset] = value.b[0];
+  spd_msg[offset + 1] = value.b[1];
 
-// Function to actually read the boi
-uint8_t *ws_Val() {
 #ifdef DEBUG
   // Print the raw value
-  Serial.print("RPM: ");
-  Serial.println(out_rpm);
+  Serial.printf("RPM: %d\n", value.in);
 #endif // DEBUG
 
-  // Cast the float to a byte array
-  memcpy(speed_msg, &out_rpm, sizeof(out_rpm));
-
   // Return the calculated value or last value
-  return speed_msg;
+  return spd_msg;
 }
 
-#endif
+#endif // WHEEL_SPD
+#endif // s_speed_hpp
