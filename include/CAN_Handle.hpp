@@ -3,7 +3,6 @@
 
 // Imports
 #include "main.h"
-#include <Arduino.h>
 
 #ifdef BLUECAN
 // MCP Imports
@@ -20,7 +19,7 @@ void init_CAN() {
 }
 
 // Sends through SPI.
-void send_CAN(uint16_t id, uint8_t buf[]) {
+void send_CAN(uint16_t id, uint8_t *buf) {
 
   // Create new CAN message called "msg"
   CAN_Frame msg;

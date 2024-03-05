@@ -6,8 +6,8 @@
 #define BLUECAN   // sets CAN provider to the MCP2515
 #define POT       // enables reading and sending of pot values
 #define WHEEL_SPD // enables reading and sending of wheel speed values
-#define TIRE_TEMP // enables reading and sending of tire temp values
-#define DEBUG     // enables debug prints for when shit doesn't look right
+// #define TIRE_TEMP // enables reading and sending of tire temp values
+#define DEBUG // enables debug prints for when shit doesn't look right
 
 // Always needed imports
 #include "CAN_Handle.hpp"

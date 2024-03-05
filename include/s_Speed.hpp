@@ -7,22 +7,24 @@
 // Imports
 #include <Arduino.h>
 #include <FreqMeasureMulti.h>
+#include <Metro.h>
 
 class Wheel_Spd {
+private:
   int count;
   float sum;
   uint8_t offset;
   FreqMeasureMulti ws;
+  Metro timeout = 100;
+
+public:
+  void init(uint8_t pin, uint8_t offset);
+  void update();
 
   union {
     uint16_t in;
     byte b[2];
   } value;
-
-public:
-  void init(uint8_t pin, uint8_t offset);
-  void update();
-  uint8_t *getMessage();
 };
 
 // Tells the lib to start reading pin X. Look at FreqMeasureMulti repo for what
@@ -40,32 +42,25 @@ void Wheel_Spd::update() {
     sum = sum + ws.read();
     count = count + 1;
   }
-}
-
-uint8_t *Wheel_Spd::getMessage() {
-  // Holder for the byte array
-  uint8_t *spd_msg;
 
   // If car has moved update value
-  if (count > 0) {
-    value.in = (int)((ws.countToFrequency(sum / count) * 60 / 18) * 100);
+  if (count > 1) {
+    value.in = ws.countToFrequency(sum / count) * 60 / 18;
+    Serial.println(value.in);
 
     // Reset working vars
     sum = 0;
     count = 0;
+  } else {
+    if (timeout.check()) {
+      value.in = 0;
+    }
   }
-
-  // Copy the value into a uint8_t array for CAN
-  spd_msg[offset] = value.b[0];
-  spd_msg[offset + 1] = value.b[1];
 
 #ifdef DEBUG
   // Print the raw value
   Serial.printf("RPM: %d\n", value.in);
 #endif // DEBUG
-
-  // Return the calculated value or last value
-  return spd_msg;
 }
 
 #endif // WHEEL_SPD
