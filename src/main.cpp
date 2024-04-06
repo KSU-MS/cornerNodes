@@ -1,26 +1,28 @@
 // All the toggles are in the "main.hpp" file
 #include "main.h"
-#include "CAN_Handle.hpp"
-#include "core_pins.h"
+// #include "CAN_Handle.hpp"
+#include <CAN_MCP2515.h>
 
 // If you want to add a new sensor, create a hpp file with your defs, libs and
 // its logic, you'll also have to add the sensor to the CIs class in
 // "CAN_Label_Maker.hpp" and define how you want that to generate its IDs
-
-// Get IDs after calcs
-CIs ID = calc_IDs(node_fl); // SET OFFSET HERE
 
 // Some globals
 Metro uPot = 50;   // Shock Pot pol rate
 Metro uSpeed = 50; // Wheel speed pol rate
 Metro uTemps = 50; // Tire Temp pol rate
 Metro uART = 3000; // Timeout for waiting on user to connect
+CIs ID;
 
+// The sensors
 Pot fl_pt;
 Wheel_Spd fl_ws;
 // Tire_Temp fl_tt;
 
 void setup() {
+  // Get IDs after calcs
+  ID = calc_IDs(node_fl); // SET OFFSET HERE
+
   // Start serial
   Serial.begin(9600);
 

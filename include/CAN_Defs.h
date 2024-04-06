@@ -2,7 +2,6 @@
 #define CAN_Defs_h
 
 #include <Arduino.h>
-#include <inttypes.h>
 
 // From the spec
 #define CAN_DOMINANT 0

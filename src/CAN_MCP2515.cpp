@@ -67,7 +67,7 @@ Stand-Alone CAN Controller and MCP2561 High-Speed CAN Transceivers.
 // Initialize SPI communications and set MCP2515 into Config mode
 CAN_MCP2515::CAN_MCP2515() {
   // Use a default of pin 10 for SPI chip select
-  CS = 10;
+  CS = 6;
   _init();
 }
 
@@ -614,5 +614,3 @@ void CAN_MCP2515::setInterrupts(uint8_t mask, uint8_t writeVal) {
   Bit 0: RX0IE: Receive Buffer 0 Full Interrupt Enable bit
   */
 }
-
-CAN_MCP2515 CAN(10); // Create CAN channel using pin 10 for SPI chip select
