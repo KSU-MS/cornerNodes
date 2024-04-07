@@ -1,11 +1,19 @@
 // All the toggles are in the "main.hpp" file
 #include "main.h"
+#include <AA_MCP2515.h>
 // #include "CAN_Handle.hpp"
-#include <CAN_MCP2515.h>
+// #include <CAN_MCP2515.h>
 
 // If you want to add a new sensor, create a hpp file with your defs, libs and
 // its logic, you'll also have to add the sensor to the CIs class in
 // "CAN_Label_Maker.hpp" and define how you want that to generate its IDs
+
+const CANBitrate::Config CAN_BITRATE = CANBitrate::Config_8MHz_500kbps;
+const uint8_t CAN_PIN_CS = CSP;
+const int8_t CAN_PIN_INT = 2;
+
+CANConfig config(CAN_BITRATE, CAN_PIN_CS, CAN_PIN_INT);
+CANController CAN(config);
 
 // Some globals
 Metro uPot = 50;   // Shock Pot pol rate
@@ -31,7 +39,12 @@ void setup() {
   // fl_tt.init();
 
   // Setup whatever CAN coms
-  init_CAN();
+  // init_CAN();
+  while(CAN.begin(CANController::Mode::Normal) != CANController::OK) {
+    Serial.println("CAN begin FAIL - delaying for 1 second");
+    delay(1000);
+  }
+  Serial.println("CAN begin OK");
 
 #ifdef DEBUG
   // Wait for user to connect to see all output
@@ -55,11 +68,17 @@ void loop() {
   fl_ws.update();
 
   if (uPot.check()) {
-    send_CAN(ID.apotsID, fl_pt.value.b);
+    CANFrame frame(ID.apotsID,fl_pt.value.b,sizeof(fl_pt.value.b));
+    CAN.write(frame);
+    frame.print("Shockpot out");
+    // send_CAN(ID.apotsID, fl_pt.value.b);
   }
 
   if (uSpeed.check()) {
-    send_CAN(ID.speedID, fl_ws.value.b);
+    CANFrame frame(ID.speedID,fl_ws.value.b,sizeof(fl_ws.value.b));
+    CAN.write(frame);
+    frame.print("Shockpot out");
+    // send_CAN(ID.speedID, fl_ws.value.b);
   }
 
   // if (uTemps.check()) {
