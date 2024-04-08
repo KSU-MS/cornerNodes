@@ -1,7 +1,7 @@
 #ifndef Temps_hpp
 #define Temps_hpp
 
-#include "main.h"
+#include "main.hpp"
 
 #ifdef TIRE_TEMP
 // Imports
