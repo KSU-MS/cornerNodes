@@ -1,7 +1,7 @@
 #ifndef s_speed_hpp
 #define s_speed_hpp
 
-#include "main.h"
+#include "main.hpp"
 
 #ifdef WHEEL_SPD
 // Imports

@@ -1,7 +1,7 @@
 #ifndef s_Pots_hpp
 #define s_Pots_hpp
 
-#include "main.h"
+#include "main.hpp"
 
 #ifdef POT
 
