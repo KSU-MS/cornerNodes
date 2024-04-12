@@ -8,18 +8,18 @@
 // Toggles for diffrent features
 // #define FLEXCAN // sets CAN provider to the teensy's onboard CAN controller
 #define BLUECAN   // sets CAN provider to the MCP2515
-#define POT       // enables reading and sending of pot values
+#define ANALOGS   // enables reading and sending of pot values
 #define WHEEL_SPD // enables reading and sending of wheel speed values
 // #define TIRE_TEMP // enables reading and sending of tire temp values
 #define DEBUG
 
 // Can stuffs
+#include "CAN_Defs.hpp"
 #include "CAN_Handle.hpp"
-#include "CAN_Label_Maker.hpp"
 
 // Pot things
-#ifdef POT
-#include "s_Pots.hpp"
+#ifdef ANALOGS
+#include "s_Analogs.hpp"
 #endif
 
 // Wheel speed things
