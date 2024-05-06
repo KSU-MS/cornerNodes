@@ -11,6 +11,13 @@
 
 Adafruit_ADS1115 ads; // Class assigment for the 16 bit ADC
 
+void init_adc() {
+  // Start the ADC
+  ads.begin();
+  ads.setGain(GAIN_TWOTHIRDS);
+  ads.setDataRate(RATE_ADS1115_860SPS);
+}
+
 // Helper functions for the pointer
 uint16_t avr_helper(uint8_t pin) { return (uint16_t)analogRead(pin); }
 uint16_t adc_helper(uint8_t pin) { return ads.readADC_SingleEnded(pin); }
@@ -37,16 +44,12 @@ public:
 
 // The constructor for the class
 void Analog::init(uint8_t set_pin, bool set_ADC) {
-  Serial.println("Setting up pin " + String(set_pin));
   pin = set_pin;
-
   is_filtered = false;
 
-  if (set_ADC) {
-    // Start the ADC
-    ads.begin();
-    delay(200);
+  Serial.println("Setting up pin " + String(set_pin));
 
+  if (set_ADC) {
     if (ads.begin(0x48, &Wire1)) {
       reader = &adc_helper;
       Serial.println("Set ADC on pin " + String(set_pin));
@@ -61,17 +64,12 @@ void Analog::init(uint8_t set_pin, bool set_ADC) {
 
 void Analog::init(uint8_t set_pin, bool set_ADC, uint16_t cutoff_freq) {
   pin = set_pin;
-  Serial.println("Setting up pin " + String(set_pin));
-
   is_filtered = true;
   alpha = 2 * 3.14 * cutoff_freq / (1 + 2 * 3.14 * cutoff_freq);
-  Serial.println("Alpha for said pin: " + String(alpha));
+
+  Serial.println("Pin " + String(set_pin) + " with alpha " + String(alpha));
 
   if (set_ADC) {
-    // Start the ADC
-    ads.begin();
-    delay(200);
-
     if (ads.begin(0x48, &Wire1)) {
       reader = &adc_helper;
       Serial.println("Set ADC on pin " + String(set_pin));

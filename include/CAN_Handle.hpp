@@ -1,6 +1,7 @@
 #ifndef CAN_Handle_hpp
 #define CAN_Handle_hpp
 #include "main.hpp"
+#include "mcp_can_dfs.h"
 
 #ifdef BLUECAN
 #include <SPI.h>
@@ -15,7 +16,7 @@ void init_CAN() {
   digitalWrite(CSP, HIGH);
 
   Serial.printf("Init MCP2515 on pin %d\n", CSP);
-  CAN.begin(MCP_ANY, CAN_500KBPS, MCP_8MHZ);
+  CAN.begin(MCP_ANY, CAN_1000KBPS, MCP_8MHZ);
   // Change to normal mode to allow messages to be transmitted
   CAN.setMode(MCP_NORMAL);
 }
