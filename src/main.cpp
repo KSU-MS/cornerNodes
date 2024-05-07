@@ -15,8 +15,8 @@ void setup() {
   init_adc();
 
   // Start sensors
-  f_brake.init(0, true, 20);
-  r_brake.init(1, true, 20);
+  f_brake.init(0, true);
+  r_brake.init(1, true);
 
   // Setup whatever CAN coms
   init_CAN();
