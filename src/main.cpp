@@ -2,12 +2,16 @@
 #include "CAN_Handle.hpp"
 
 // Some globals
-Metro uBrake = 20;
+Metro uSend = 20;
 
-Analog RL_shock;
-Analog RR_shock;
-Wheel_Spd RL_ws;
-Wheel_Spd RR_ws;
+Analog FL_shock;
+Analog FR_shock;
+
+Analog F_Brake;
+Analog R_Brake;
+
+Wheel_Spd FL_ws;
+Wheel_Spd FR_ws;
 
 void setup() {
   // Start serial
@@ -17,11 +21,14 @@ void setup() {
   init_adc();
 
   // Start sensors
-  RL_shock.init(0, true);
-  RR_shock.init(2, true);
+  FL_shock.init(0, true);
+  FR_shock.init(1, true);
 
-  RL_ws.init(9, 0);
-  RR_ws.init(22, 0);
+  F_Brake.init(2, true);
+  R_Brake.init(3, true);
+
+  FL_ws.init(9, 0);
+  FR_ws.init(22, 0);
 
   // Setup whatever CAN coms
   init_CAN();
@@ -29,17 +36,23 @@ void setup() {
 
 void loop() {
   // Update our fellows
-  RL_shock.update();
-  RR_shock.update();
+  FL_shock.update();
+  FR_shock.update();
 
-  RL_ws.update();
-  RR_ws.update();
+  F_Brake.update();
+  R_Brake.update();
 
-  if (uBrake.check()) {
-    send_CAN(SHOCK_RL, sizeof(RL_shock.value), RL_shock.value.b);
-    send_CAN(SHOCK_RR, sizeof(RR_shock.value), RR_shock.value.b);
+  FL_ws.update();
+  FR_ws.update();
 
-    send_CAN(WHEELSPEED_RL, sizeof(RL_ws.value), RL_ws.value.b);
-    send_CAN(WHEELSPEED_RR, sizeof(RR_ws.value), RR_ws.value.b);
+  if (uSend.check()) {
+    send_CAN(SHOCK_FL, sizeof(FL_shock.value), FL_shock.value.b);
+    send_CAN(SHOCK_FR, sizeof(FR_shock.value), FR_shock.value.b);
+
+    send_CAN(BRAKEPRESSURE_F, sizeof(F_Brake.value), F_Brake.value.b);
+    send_CAN(BRAKEPRESSURE_R, sizeof(R_Brake.value), R_Brake.value.b);
+
+    send_CAN(WHEELSPEED_FL, sizeof(FL_ws.value), FL_ws.value.b);
+    send_CAN(WHEELSPEED_FR, sizeof(FR_ws.value), FR_ws.value.b);
   }
 }
