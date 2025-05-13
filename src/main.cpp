@@ -1,34 +1,23 @@
-#include "main.hpp"
-#include "CAN_Handle.hpp"
-
-// Some globals
-Metro uBrake = 20;
-
-Analog f_brake;
-Analog r_brake;
+#include <main.hpp>
 
 void setup() {
   // Start serial
   Serial.begin(9600);
 
-  // Init the ADC
-  init_adc();
+  // Init the pins
+  pinMode(15, INPUT);
 
-  // Start sensors
-  f_brake.init(0, true);
-  r_brake.init(1, true);
-
-  // Setup whatever CAN coms
-  init_CAN();
+  // Set up the can msg
+  steer_pot_msg.id = CAN_ID_OMNI_STEERING_DATA;
 }
 
 void loop() {
   // Update our fellows
-  f_brake.update();
-  r_brake.update();
+  steering_pot.update();
 
-  if (uBrake.check()) {
-    send_CAN(BRAKEPRESSURE_F, sizeof(f_brake.value), f_brake.value.b);
-    send_CAN(BRAKEPRESSURE_R, sizeof(r_brake.value), r_brake.value.b);
+  if (uSteer.check()) {
+    steer_pot_msg.length = pack_message(&kms_dbc, CAN_ID_OMNI_STEERING_DATA,
+                                        &steer_pot_msg.buf.val);
+    can.send_controller_message(steer_pot_msg);
   }
 }
