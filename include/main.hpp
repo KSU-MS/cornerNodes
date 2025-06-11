@@ -18,9 +18,11 @@ adc rear_brake(mcp, 1);
 #include "can_tools.hpp"
 #include <car.h>
 can_obj_car_h_t kms_dbc;
-canMan can(TEENSY_CAN2, 1000000);
+canMan inv_can(TEENSY_CAN1, 500000);
+canMan daq_can(TEENSY_CAN2, 1000000);
 
-can_message left_shock_msg;
-can_message right_shock_msg;
-can_message front_brake_msg;
-can_message rear_brake_msg;
+can_message left_shock_msg = {.id = CAN_ID_CORNERNODE_FL_SHOCKPOT};
+can_message right_shock_msg = {.id = CAN_ID_CORNERNODE_FR_SHOCKPOT};
+can_message front_brake_msg = {.id = CAN_ID_CORNERNODE_FRONT_BRAKEPRESSURE};
+can_message rear_brake_msg = {.id = CAN_ID_CORNERNODE_REAR_BRAKEPRESSURE};
+can_message steering_pot_msg = {.id = CAN_ID_OMNI_STEERING_DATA};
