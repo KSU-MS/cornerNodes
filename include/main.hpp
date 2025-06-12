@@ -11,8 +11,8 @@ Metro hz_50(20, true);
 #include <adc.hpp>
 adc left_shock_pot(avr, 15);
 adc right_shock_pot(avr, 16);
-adc front_brake(mcp, 0);
-adc rear_brake(mcp, 1);
+adc front_brake(mcp, 2, 0);
+adc rear_brake(mcp, 2, 1);
 
 // Can stuffs
 #include "can_tools.hpp"

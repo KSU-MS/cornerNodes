@@ -5,7 +5,7 @@ void setup() {
   Serial.begin(9600);
 
   // Init the MCP
-  init_mcp();
+  init_mcp(2);
 
   // Init the pins
   pinMode(15, INPUT);
@@ -51,6 +51,9 @@ void loop() {
     // steering_pot_msg.length = pack_message(&kms_dbc,
     // CAN_ID_OMNI_STEERING_DATA,
     //                                        &steering_pot_msg.buf.val);
+
+    Serial.printf("Front: %i\n\r", front_brake.value.in);
+    Serial.printf("Rear: %i\n\r", rear_brake.value.in);
 
     daq_can.send_controller_message(front_brake_msg);
     daq_can.send_controller_message(rear_brake_msg);
