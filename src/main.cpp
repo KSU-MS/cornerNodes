@@ -4,12 +4,12 @@ void setup() {
   // Start serial
   Serial.begin(9600);
 
-  // Init the MCP
-  init_mcp(2);
-
   // Init the pins
-  pinMode(15, INPUT);
+  pinMode(21, INPUT);
+  pinMode(20, INPUT);
   pinMode(16, INPUT);
+  pinMode(15, INPUT);
+  pinMode(14, INPUT);
 }
 
 void loop() {
@@ -18,6 +18,7 @@ void loop() {
   right_shock_pot.update();
   front_brake.update();
   rear_brake.update();
+  steering_pot.update();
 
   if (hz_50.check()) {
     encode_can_0x384_cornernode_fl_shockpot(&kms_dbc, left_shock_pot.value.in);
@@ -28,8 +29,8 @@ void loop() {
     right_shock_msg.length = pack_message(
         &kms_dbc, CAN_ID_CORNERNODE_FR_SHOCKPOT, &right_shock_msg.buf.val);
 
-    // daq_can.send_controller_message(left_shock_msg);
-    // daq_can.send_controller_message(right_shock_msg);
+    daq_can.send_controller_message(left_shock_msg);
+    daq_can.send_controller_message(right_shock_msg);
 
     hz_50.reset();
   }
@@ -47,17 +48,17 @@ void loop() {
         pack_message(&kms_dbc, CAN_ID_CORNERNODE_REAR_BRAKEPRESSURE,
                      &rear_brake_msg.buf.val);
 
-    // encode_can_0x451_omni_steering(&kms_dbc, steering_pot.value.in);
-    // steering_pot_msg.length = pack_message(&kms_dbc,
-    // CAN_ID_OMNI_STEERING_DATA,
-    //                                        &steering_pot_msg.buf.val);
+    encode_can_0x383_cornernode_steeringpot(&kms_dbc, steering_pot.value.in);
+    steering_pot_msg.length = pack_message(
+        &kms_dbc, CAN_ID_CORNERNODE_STEERINGPOT, &steering_pot_msg.buf.val);
 
     Serial.printf("Front: %i\n\r", front_brake.value.in);
     Serial.printf("Rear: %i\n\r", rear_brake.value.in);
+    Serial.printf("steer: %i\n\r", steering_pot.value.in);
 
     daq_can.send_controller_message(front_brake_msg);
     daq_can.send_controller_message(rear_brake_msg);
-    // daq_can.send_controller_message(steering_pot_msg);
+    daq_can.send_controller_message(steering_pot_msg);
 
     hz_20.reset();
   }
