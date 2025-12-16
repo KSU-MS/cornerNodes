@@ -1,3 +1,5 @@
+#include "car.h"
+#include "core_pins.h"
 #include <main.hpp>
 
 void setup() {
@@ -10,6 +12,8 @@ void setup() {
   pinMode(16, INPUT);
   pinMode(15, INPUT);
   pinMode(14, INPUT);
+
+  // frontLeft.init(2, &frontLeftISR, &pulseCount);
 }
 
 void loop() {
@@ -19,6 +23,7 @@ void loop() {
   front_brake.update();
   rear_brake.update();
   steering_pot.update();
+  // frontLeft.update_rpms(millis());
 
   if (hz_50.check()) {
     encode_can_0x384_cornernode_fl_shockpot(&kms_dbc, left_shock_pot.value.in);
@@ -29,8 +34,16 @@ void loop() {
     right_shock_msg.length = pack_message(
         &kms_dbc, CAN_ID_CORNERNODE_FR_SHOCKPOT, &right_shock_msg.buf.val);
 
+    // encode_can_0x388_cornernode_fl_wheelspeed(&kms_dbc,
+    // frontLeft.get_rpms()); front_left_ws_msg.length = pack_message(
+    //     &kms_dbc, CAN_ID_CORNERNODE_FL_WHEELSPEED,
+    //     &front_left_ws_msg.buf.val);
+    //
+    // Serial.printf("Left wheelspeed: %i\n\r", frontLeft.get_rpms());
+
     daq_can.send_controller_message(left_shock_msg);
     daq_can.send_controller_message(right_shock_msg);
+    // daq_can.send_controller_message(front_left_ws_msg);
 
     hz_50.reset();
   }

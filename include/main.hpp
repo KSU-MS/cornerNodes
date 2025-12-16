@@ -27,3 +27,12 @@ can_message right_shock_msg = {.id = CAN_ID_CORNERNODE_FR_SHOCKPOT};
 can_message front_brake_msg = {.id = CAN_ID_CORNERNODE_FRONT_BRAKEPRESSURE};
 can_message rear_brake_msg = {.id = CAN_ID_CORNERNODE_REAR_BRAKEPRESSURE};
 can_message steering_pot_msg = {.id = CAN_ID_CORNERNODE_STEERINGPOT};
+can_message front_left_ws_msg = {.id = CAN_ID_CORNERNODE_FL_WHEELSPEED};
+
+// #include "ws.hpp"
+//
+// volatile uint32_t pulseCount;
+//
+// void frontLeftISR() { pulseCount++; }
+//
+// wheel_speed frontLeft;
