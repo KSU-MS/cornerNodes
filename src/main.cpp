@@ -12,7 +12,7 @@ void setup() {
   pinMode(15, INPUT);
   pinMode(19, INPUT);
 
-  rearRight.init(15, &rearRightISR, &rr_pulseCount);
+  // rearRight.init(15, &rearRightISR, &rr_pulseCount);
 }
 
 void loop() {
@@ -21,7 +21,7 @@ void loop() {
   right_shock_pot.update();
   motor_temp.update();
   coolant_temp.update();
-  rearRight.update_rpms(millis());
+  // rearRight.update_rpms(millis());
 
   adjusted_motor_temp =
       (-14.2502 +
@@ -51,15 +51,16 @@ void loop() {
     coolant_temp_msg.length = pack_message(
         &kms_dbc, CAN_ID_CORNERNODE_COOLANT_TEMP, &coolant_temp_msg.buf.val);
 
-    encode_can_0x38b_cornernode_rr_wheelspeed(&kms_dbc, rearRight.get_rpms());
-    rr_wheelspeed_msg.length = pack_message(
-        &kms_dbc, CAN_ID_CORNERNODE_RR_WHEELSPEED, &rr_wheelspeed_msg.buf.val);
+    // encode_can_0x38b_cornernode_rr_wheelspeed(&kms_dbc,
+    // rearRight.get_rpms()); rr_wheelspeed_msg.length = pack_message(
+    //     &kms_dbc, CAN_ID_CORNERNODE_RR_WHEELSPEED,
+    //     &rr_wheelspeed_msg.buf.val);
 
     daq_can.send_controller_message(left_shock_msg);
     daq_can.send_controller_message(right_shock_msg);
     daq_can.send_controller_message(motor_temp_msg);
     daq_can.send_controller_message(coolant_temp_msg);
-    daq_can.send_controller_message(rr_wheelspeed_msg);
+    // daq_can.send_controller_message(rr_wheelspeed_msg);
 
     // Serial.printf("left shock: %i\n\r", left_shock_pot.value.in);
     // Serial.printf("right shock: %i\n\r", right_shock_pot.value.in);

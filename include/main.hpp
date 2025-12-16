@@ -30,9 +30,9 @@ can_message rr_wheelspeed_msg = {.id = CAN_ID_CORNERNODE_RR_WHEELSPEED};
 double adjusted_motor_temp;
 double adjusted_coolant_temp;
 
-#include "ws.hpp"
-uint64_t rr_pulseCount;
-
-void rearRightISR() { rr_pulseCount++; }
-
-wheel_speed rearRight;
+// #include "ws.hpp"
+// uint64_t rr_pulseCount;
+//
+// void rearRightISR() { rr_pulseCount++; }
+//
+// wheel_speed rearRight;
